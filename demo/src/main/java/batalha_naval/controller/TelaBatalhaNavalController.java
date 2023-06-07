@@ -63,7 +63,7 @@ public class TelaBatalhaNavalController implements Initializable {
             for (int col = 0; col < 10; col++) {
                 Button button1 = new Button();
                 button1.setMinSize(50, 50);
-                button1.setStyle("-fx-background-color: blue; -fx-border-color: black");
+                button1.setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
                 buttons1[row][col] = button1;
                 button1.setOnAction(buttonClickHandler);
                 button1.setText("button1[" + row + "][" + col + "]]");
@@ -71,7 +71,7 @@ public class TelaBatalhaNavalController implements Initializable {
 
                 Button button2 = new Button();
                 button2.setMinSize(50, 50);
-                button2.setStyle("-fx-background-color: blue; -fx-border-color: black");
+                button2.setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
                 buttons2[row][col] = button2;
                 button2.setText("button2[" + row + "][" + col + "]]");
                 button2.setOnAction(buttonClickHandler);
