@@ -67,6 +67,7 @@ public class TelaBatalhaNavalController implements Initializable {
                 buttons1[row][col] = button1;
                 button1.setOnAction(buttonClickHandler);
                 button1.setText("button1[" + row + "][" + col + "]]");
+                button1.setUserData("Agua");
                 GridPane1.add(button1, col, row);
 
                 Button button2 = new Button();
@@ -74,6 +75,7 @@ public class TelaBatalhaNavalController implements Initializable {
                 button2.setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
                 buttons2[row][col] = button2;
                 button2.setText("button2[" + row + "][" + col + "]]");
+                button2.setUserData("Agua");
                 button2.setOnAction(buttonClickHandler);
                 GridPane2.add(button2, col, row);
             }
@@ -86,7 +88,7 @@ public class TelaBatalhaNavalController implements Initializable {
         public void handle(ActionEvent event) {
             Button clickedButton = (Button) event.getSource();
             // Faça algo com o botão clicado
-            System.out.println("Botão clicado: " + clickedButton.getText());
+            System.out.println("Botão clicado: " + clickedButton.getText() + "valor" + clickedButton.getUserData());
         }
     }
 
