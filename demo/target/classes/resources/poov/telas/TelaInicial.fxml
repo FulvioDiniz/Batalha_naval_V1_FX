@@ -8,8 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane fx:id="Fundo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="batalha_naval.controller.TelaInicialController" style="-fx-background-color: blue">
+<AnchorPane fx:id="Fundo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: blue" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="batalha_naval.controller.TelaInicialController">
    <children>
       <Button fx:id="NovoJogo" layoutX="209.0" layoutY="118.0" mnemonicParsing="false" onAction="#ButtonNovoJogo" text="Novo Jogo" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
          <font>
@@ -32,7 +31,7 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <Button fx:id="Ranking" layoutX="209.0" layoutY="193.0" mnemonicParsing="false" onAction="#ButtonRanking" prefHeight="56.0" prefWidth="191.0" text="Ranking" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
+      <Button fx:id="Ranking" layoutX="209.0" layoutY="244.0" mnemonicParsing="false" onAction="#ButtonRanking" prefHeight="56.0" prefWidth="191.0" text="Ranking" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font name="Calibri Light Italic" size="30.0" />
          </font>
@@ -53,7 +52,7 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <Button fx:id="Sair" layoutX="209.0" layoutY="266.0" mnemonicParsing="false" onAction="#ButtonSair" prefHeight="56.0" prefWidth="191.0" text="Sair" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
+      <Button fx:id="Sair" layoutX="209.0" layoutY="300.0" mnemonicParsing="false" onAction="#ButtonSair" prefHeight="56.0" prefWidth="191.0" text="Sair" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font name="Calibri Bold" size="30.0" />
          </font>
@@ -115,5 +114,26 @@
             </RadialGradient>
          </fill>
       </Text>
+      <Button fx:id="Cadastrar" layoutX="209.0" layoutY="181.0" mnemonicParsing="false" onAction="#ButtonCadastrar" prefHeight="56.0" prefWidth="191.0" text="Cadastrar " textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
+         <font>
+            <Font name="ArtifaktElement-Light" size="30.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.4116022099447514" centerY="0.495260663507109" cycleMethod="REPEAT" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.7672380805015564" green="0.05999999865889549" blue="1.0" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.9682098627090454" green="1.0" blue="0.046296294778585434" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
    </children>
 </AnchorPane>
