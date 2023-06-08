@@ -10,6 +10,18 @@ public class Barco {
     private Date tempo;
     private String nome;
 
+    public Barco() {
+    }
+
+    public Barco(int ponto, int tamanho, int acertos, int erros, Date tempo, String nome) {
+        this.ponto = ponto;
+        this.tamanho = tamanho;
+        this.acertos = acertos;
+        this.erros = erros;
+        this.tempo = tempo;
+        this.nome = nome;
+    }
+
     public int getPonto() {
         return ponto;
     }
