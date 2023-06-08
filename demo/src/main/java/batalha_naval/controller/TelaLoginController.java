@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import batalha_naval.dao.PessoaDAO;
+
 import batalha_naval.dao.core.DAOFactory;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

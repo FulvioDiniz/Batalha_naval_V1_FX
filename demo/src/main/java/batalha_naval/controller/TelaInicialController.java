@@ -39,16 +39,16 @@ public class TelaInicialController implements Initializable {
 
     private Stage stageIniciarJogo;
     private Stage stageCadastrar;
-    private Stage stageRanking;
+
 
     private DAOFactory daoFactory;
     private TelaLoginController telaLoginController;
 
     public TelaInicialController() {
         ConnectionFactory connectionFactory = new ConexaoFactoryPostgreSQL(
-                "postgres://oaktlyql:NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u@silly.db.elephantsql.com/oaktlyql", "oaktlyql",
+                "oaktlyql:NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u@silly.db.elephantsql.com/oaktlyql ", "oaktlyql",
                 "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
-        daoFactory = new DAOFactory(connectionFactory);
+               daoFactory = new DAOFactory(connectionFactory);
     }
 
     @FXML

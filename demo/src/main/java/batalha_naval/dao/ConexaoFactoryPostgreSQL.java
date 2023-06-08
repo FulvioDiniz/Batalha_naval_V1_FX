@@ -16,10 +16,12 @@ public class ConexaoFactoryPostgreSQL implements ConnectionFactory {
     
     /**
      * 
-     * @param dbURL     localhost:5432/poov
-     * @param user      postgres
-     * @param password  12345
+     * @param dbURL    oaktlyql:NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u@silly.db.elephantsql.com/oaktlyql
+     * @param user      oaktlyql
+     * @param password  NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u
      */
+
+    
     public ConexaoFactoryPostgreSQL(String dbURL, String user, String password) {
         this.dbURL = dbURL;
         this.user = user;
