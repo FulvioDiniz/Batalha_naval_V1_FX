@@ -3,6 +3,9 @@ package batalha_naval.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import batalha_naval.dao.ConexaoFactoryPostgreSQL;
+import batalha_naval.dao.core.ConnectionFactory;
+import batalha_naval.dao.core.DAOFactory;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,6 +38,18 @@ public class TelaInicialController implements Initializable {
     private Button Sair;
 
     private Stage stageIniciarJogo;
+    private Stage stageCadastrar;
+    private Stage stageRanking;
+
+    private DAOFactory daoFactory;
+    private TelaLoginController telaLoginController;
+
+    public TelaInicialController() {
+        ConnectionFactory connectionFactory = new ConexaoFactoryPostgreSQL(
+                "postgres://oaktlyql:NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u@silly.db.elephantsql.com/oaktlyql", "oaktlyql",
+                "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+        daoFactory = new DAOFactory(connectionFactory);
+    }
 
     @FXML
     void ButtonNovoJogo(ActionEvent event) {
@@ -48,6 +63,10 @@ public class TelaInicialController implements Initializable {
 
     @FXML
     void ButtonCadastrar(ActionEvent event) {
+        if (stageCadastrar.getOwner() == null) {
+            stageCadastrar.initOwner((Stage) Fundo.getScene().getWindow());
+        }
+        stageCadastrar.showAndWait();
 
     }
 
@@ -69,13 +88,25 @@ public class TelaInicialController implements Initializable {
         FXMLLoader fxmlLoader;
         try {
             stageIniciarJogo = new Stage();
-            fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaBatalhaNaval.fxml"));
+            fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaJogar.fxml"));
             parent = fxmlLoader.load();
             Scene scene = new Scene(parent);
             stageIniciarJogo.setScene(scene);
             stageIniciarJogo.setTitle("Batalha Naval");
             stageIniciarJogo.setResizable(false);
             stageIniciarJogo.initModality(Modality.APPLICATION_MODAL);
+
+            stageCadastrar = new Stage();
+            fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaCadastrar.fxml"));
+            parent = fxmlLoader.load();
+            telaLoginController = fxmlLoader.getController();
+            telaLoginController.setDAOFactory(daoFactory);
+            Scene scene2 = new Scene(parent);
+            stageCadastrar.setScene(scene2);
+            stageCadastrar.setTitle("Casdastrar Jogador");
+            stageCadastrar.setResizable(false);
+            stageCadastrar.initModality(Modality.APPLICATION_MODAL);
+
         } catch (Exception e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.initModality(Modality.WINDOW_MODAL);

@@ -5,6 +5,8 @@ public class Pessoa {
     private int ponto;
     private int acertos;
     private int erros;
+    private String senha;
+    private long id;
 
     public Pessoa() {
     }
@@ -46,6 +48,23 @@ public class Pessoa {
 
     public void setErros(int erros) {
         this.erros = erros;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public long getId() {
+        return id;
     }
 
 }
