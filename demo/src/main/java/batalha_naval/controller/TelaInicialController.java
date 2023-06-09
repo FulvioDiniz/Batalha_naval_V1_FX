@@ -45,11 +45,14 @@ public class TelaInicialController implements Initializable {
     private DAOFactory daoFactory;
 
     public TelaInicialController() {
-        /*ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
-                "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql", "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
-        daoFactory = new DAOFactory(conexaoFactory);*/
-         ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
-            daoFactory = new DAOFactory(conexaoFactory);
+        /*
+         * ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
+         * "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql",
+         * "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+         * daoFactory = new DAOFactory(conexaoFactory);
+         */
+        ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
+        daoFactory = new DAOFactory(conexaoFactory);
     }
 
     @FXML
@@ -73,7 +76,7 @@ public class TelaInicialController implements Initializable {
 
     @FXML
     void ButtonRanking(ActionEvent event) {
-        if(stageRanking.getOwner() == null){
+        if (stageRanking.getOwner() == null) {
             stageRanking.initOwner((Stage) Fundo.getScene().getWindow());
         }
         stageRanking.showAndWait();
@@ -129,6 +132,7 @@ public class TelaInicialController implements Initializable {
             alert.setTitle("ERRO");
             alert.setHeaderText("Erro");
             alert.setContentText("Erro carregando a aplicação!");
+            System.out.println(e.getMessage());
             alert.showAndWait();
             // Fecha a aplicação JavaFX
             Platform.exit();

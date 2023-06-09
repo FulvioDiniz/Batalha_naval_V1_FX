@@ -1,18 +1,15 @@
 package batalha_naval.controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+
 
 import batalha_naval.dao.ConexaoFactoryPostgreSQL;
 import batalha_naval.dao.PessoaDAO;
 import batalha_naval.dao.core.DAOFactory;
-import batalha_naval.model.Pessoa;
 import batalha_naval.model.Filter.PessoaFilter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,7 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class TelaLoginController implements Initializable {
+public class TelaLoginController {
 
     @FXML
     private Button ButtonFecharLogin;
@@ -47,7 +44,6 @@ public class TelaLoginController implements Initializable {
     private DAOFactory daoFactory;
     private PessoaFilter Jogadorfilter1;
     private PessoaFilter Jogadorfilter2;
-    private TelaBatalhaNavalController telaBatalhaNavalController;
 
     public void setDAOFactory(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
@@ -116,6 +112,7 @@ public class TelaLoginController implements Initializable {
     @FXML
     void ButtonJogarClicado(ActionEvent event) {
         if (loginEhValido()) {
+            abrirTelaJogo();
             if (stageIniciarJogo.getOwner() == null) {
                 try {
                     /*
@@ -133,16 +130,15 @@ public class TelaLoginController implements Initializable {
                     Jogadorfilter1 = dao.findByname(TextFieldNomeJogador1.getText());
                     Jogadorfilter2 = new PessoaFilter();
                     Jogadorfilter2 = dao.findByname(TextFieldNomeJogador2.getText());
-                    // TelaBatalhaNavalController run = new TelaBatalhaNavalController();
-                    // Thread thread = new Thread(run);
-                    // thread.start();
-                    TelaBatalhaNavalController iniciaBatalha = new TelaBatalhaNavalController();
+                    TelaBatalhaNavalController iniciaBatalha = new TelaBatalhaNavalController(Jogadorfilter1,
+                            Jogadorfilter2);
                     Thread thread = new Thread(iniciaBatalha);
                     thread.start();
                     stageIniciarJogo.initOwner((Stage) ButtonJogar.getScene().getWindow());
                     Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                     currentStage.hide();
                     stageIniciarJogo.show();
+                    daoFactory.fecharConexao();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -180,8 +176,7 @@ public class TelaLoginController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void abrirTelaJogo() {
         Parent parent;
         FXMLLoader fxmlLoader;
         try {

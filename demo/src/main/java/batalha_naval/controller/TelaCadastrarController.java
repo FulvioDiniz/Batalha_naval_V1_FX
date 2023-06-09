@@ -102,6 +102,7 @@ public class TelaCadastrarController {
                 alert.setContentText("Cadastro realizado com sucesso!");
                 alert.showAndWait();
                 ((Button) event.getSource()).getScene().getWindow().hide();
+                daoFactory.fecharConexao();
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erro");
