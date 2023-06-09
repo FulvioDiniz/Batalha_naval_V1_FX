@@ -14,12 +14,15 @@ public class PessoaDAO extends GenericJDBCDAO<Pessoa, Long> {
     public PessoaDAO(Connection connection) {
         super(connection);
     }
+
+    // private List<Pessoa> pessoas = new ArrayList<>();
+
     private static final String CREATE_QUERY = "INSERT INTO dados (nome, senha, ponto, acertos, erros) VALUES (?,?,0,0,0);";
     private static final String FIND_BY_NAME_PASSWORD_QUERY = "SELECT nome,senha FROM dados where nome = ? And senha =?;";
     private static final String FIND_ALL_QUERY = "SELECT nome, senha, ponto, acertos, erros FROM dados where nome = ?;";
     private static final String UPDATE_QUERY = "UPDATE dados SET ponto = ?, acertos = ?, erros = ? WHERE nome = ?;";
     private static final String DELETE_QUERY = "DELETE FROM dados WHERE nome = ?;";
-
+    private static final String FIND_TOP_10 = "SELECT nome, ponto FROM dados ORDER BY ponto DESC LIMIT 10;";
 
     @Override
     protected Pessoa toEntity(ResultSet resultSet) throws SQLException {
@@ -33,29 +36,16 @@ public class PessoaDAO extends GenericJDBCDAO<Pessoa, Long> {
         return pessoa;
     }
 
-    public Pessoa findByNomeSenha(String nome, String senha) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME_PASSWORD_QUERY)) {
-            statement.setString(1, nome);
-            statement.setString(2, senha);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return toEntity(resultSet);
-                }
-            }
-        }
-        return null;
-    }
-
-    public Pessoa findByNome(String nome) throws SQLException {
+    public boolean findByNome(String nome) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_QUERY)) {
             statement.setString(1, nome);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return toEntity(resultSet);
+                    return true;
                 }
             }
         }
-        return null;
+        return false;
     }
 
     @Override
@@ -83,7 +73,7 @@ public class PessoaDAO extends GenericJDBCDAO<Pessoa, Long> {
     }
 
     public boolean findByNameAndPassword(String nome, String senha) {
-        try{
+        try {
             PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME_PASSWORD_QUERY);
             statement.setString(1, nome);
             statement.setString(2, senha);
@@ -92,19 +82,17 @@ public class PessoaDAO extends GenericJDBCDAO<Pessoa, Long> {
                 System.out.println("Nome: " + resultSet.getString("nome"));
                 System.out.println("Senha: " + resultSet.getString("senha"));
                 return true;
-            }
-            else{
+            } else {
                 return false;
-            }            
-        }
-        catch(SQLException e){
+            }
+        } catch (SQLException e) {
             System.out.println("Erro ao buscar pessoa");
         }
         return false;
     }
 
-    public List<Pessoa> findByname (String nome) {
-        try{
+    public List<Pessoa> findByname(String nome) {
+        try {
             PreparedStatement statement = connection.prepareStatement(FIND_ALL_QUERY);
             statement.setString(1, nome);
             ResultSet resultSet = statement.executeQuery();
@@ -119,11 +107,41 @@ public class PessoaDAO extends GenericJDBCDAO<Pessoa, Long> {
                 pessoas.add(pessoa);
             }
             return pessoas;
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Erro ao buscar pessoa");
         }
         return null;
+    }
+
+    public List<Pessoa> orderByPontos(){
+        try{
+            PreparedStatement statement = connection.prepareStatement(FIND_TOP_10);
+            ResultSet resultSet = statement.executeQuery();
+            List<Pessoa> pessoas = new ArrayList<Pessoa>();
+            while (resultSet.next()) {
+                Pessoa pessoa = new Pessoa();
+                pessoa.setNome(resultSet.getString("nome"));
+                pessoa.setPonto(resultSet.getInt("ponto"));
+                pessoas.add(pessoa);
+            }
+            return pessoas;
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar pessoa");
+        }
+        return null;
+    }
+
+    public boolean cadastrarPessoa(String nome, String senha) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(CREATE_QUERY);
+            statement.setString(1, nome);
+            statement.setString(2, senha);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Erro ao criar pessoa");
+        }
+        return false;
     }
 
     @Override
@@ -155,7 +173,5 @@ public class PessoaDAO extends GenericJDBCDAO<Pessoa, Long> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAllQuery'");
     }
-
- 
 
 }

@@ -48,8 +48,13 @@ public class TelaLoginController implements Initializable {
         this.daoFactory = daoFactory;
     }
 
+    public DAOFactory getDAOFactory() {
+        return daoFactory;
+    }
+
     private boolean loginEhValido() {
-        if (TextFieldNomeJogador1.getText().isEmpty() || TextFieldSenhaJogador1.getText().isEmpty() || TextFieldNomeJogador2.getText().isEmpty() || TextFieldSenhaJogador2.getText().isEmpty()) {
+        if (TextFieldNomeJogador1.getText().isEmpty() || TextFieldSenhaJogador1.getText().isEmpty()
+                || TextFieldNomeJogador2.getText().isEmpty() || TextFieldSenhaJogador2.getText().isEmpty()) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.initModality(Modality.WINDOW_MODAL);
             alert.setTitle("ERRO");
@@ -64,10 +69,11 @@ public class TelaLoginController implements Initializable {
                 daoFactory = new DAOFactory(conexaoFactory);
                 daoFactory.abrirConexao();
                 PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);
-                if (dao.findByNameAndPassword(TextFieldNomeJogador1.getText(), TextFieldSenhaJogador1.getText()) && dao.findByNameAndPassword(TextFieldNomeJogador2.getText(), TextFieldSenhaJogador2.getText())) {
-                    //System.out.println("Login válido");
+                if (dao.findByNameAndPassword(TextFieldNomeJogador1.getText(), TextFieldSenhaJogador1.getText()) && dao
+                        .findByNameAndPassword(TextFieldNomeJogador2.getText(), TextFieldSenhaJogador2.getText())) {
+                    // System.out.println("Login válido");
                     daoFactory.fecharConexao();
-                    return true;                    
+                    return true;
                 } else {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.initModality(Modality.WINDOW_MODAL);
@@ -101,24 +107,29 @@ public class TelaLoginController implements Initializable {
         if (loginEhValido()) {
             if (stageIniciarJogo.getOwner() == null) {
                 stageIniciarJogo.initOwner((Stage) ButtonJogar.getScene().getWindow());
-            }
-            Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            currentStage.hide();
-            stageIniciarJogo.show();
-
-        } else {
-            // problema em abrir a tela
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaCadastrar.fxml"));
-                Parent parent = fxmlLoader.load();
-                Scene scene2 = new Scene(parent);
-                stageTelaCadastrar.setScene(scene2);
-                stageTelaCadastrar.setTitle("Batalha Naval");
-                stageTelaCadastrar.setResizable(false);
-                stageTelaCadastrar.initModality(Modality.APPLICATION_MODAL);
                 Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 currentStage.hide();
-                stageTelaCadastrar.show();
+                stageIniciarJogo.show();
+            }
+        } else {
+            System.out.println("Login inválido");
+            Parent parent;
+            FXMLLoader fxmlLoader;
+            try {
+                stageTelaCadastrar = new Stage();
+                fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaCadastrar.fxml"));
+                parent = fxmlLoader.load();
+                Scene scene2 = new Scene(parent);
+                stageTelaCadastrar.setScene(scene2);
+                stageTelaCadastrar.setTitle("Cadastrar Jogador");
+                stageTelaCadastrar.setResizable(false);
+                stageTelaCadastrar.initModality(Modality.APPLICATION_MODAL);
+                if (stageTelaCadastrar.getOwner() == null) {
+                    stageTelaCadastrar.initOwner((Stage) ButtonJogar.getScene().getWindow());
+                    Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    currentStage.hide();
+                    stageTelaCadastrar.show();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 Alert alert = new Alert(AlertType.ERROR);

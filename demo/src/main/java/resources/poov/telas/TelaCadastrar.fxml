@@ -7,16 +7,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="batalha_naval.controller.TelaLoginController">
+<SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="batalha_naval.controller.TelaCadastrarController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <Text layoutX="92.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jogador 1" textAlignment="CENTER" wrappingWidth="112.13671875">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-            <Text layoutX="137.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+            <Text layoutX="137.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cadastro">
                <font>
                   <Font size="14.0" />
                </font>
@@ -28,22 +23,8 @@
          </children></AnchorPane>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <Text layoutX="92.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jogador 2" textAlignment="CENTER" wrappingWidth="112.13671875">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-            <Text layoutX="137.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="50.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome:" wrappingWidth="41.3505859375" />
-            <TextField fx:id="TextFieldNomeJogador2" layoutX="97.0" layoutY="81.0" />
-            <Text layoutX="50.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Senha:" wrappingWidth="41.3505859375" />
-            <TextField fx:id="TextFieldSenhaJogador2" layoutX="97.0" layoutY="121.0" />
-            <Button fx:id="ButtonJogar" layoutX="214.0" layoutY="343.0" mnemonicParsing="false" onAction="#ButtonJogarClicado" prefHeight="27.0" prefWidth="51.0" style="-fx-background-color: Green;" text="Jogar" textFill="WHITE" />
-            <Button fx:id="ButtonFecharLogin" layoutX="146.0" layoutY="345.0" mnemonicParsing="false" onAction="#ButtonFecharLoginClicado" style="-fx-background-color: red;" text="Fechar" textFill="WHITE" />
+            <Button fx:id="ButtonCadastrar" layoutX="194.0" layoutY="343.0" mnemonicParsing="false" onAction="#ButtonCadastrarClicado" prefHeight="27.0" prefWidth="82.0" style="-fx-background-color: Green;" text="Cadastrar" textFill="WHITE" />
+            <Button fx:id="ButtonFecharCadastro" layoutX="123.0" layoutY="344.0" mnemonicParsing="false" onAction="#ButtonFecharCadastroClicado" style="-fx-background-color: red;" text="Fechar" textFill="WHITE" />
          </children>
       </AnchorPane>
   </items>

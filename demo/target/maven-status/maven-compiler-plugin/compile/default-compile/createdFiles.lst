@@ -1,1 +1,13 @@
+batalha_naval\model\Pessoa.class
+batalha_naval\model\Barco.class
+batalha_naval\dao\ConexaoFactoryPostgreSQL.class
+batalha_naval\dao\PessoaDAO.class
+batalha_naval\dao\ConexaoFactoryMySQL.class
+batalha_naval\dao\core\GenericJDBCDAO.class
+batalha_naval\dao\core\ConnectionFactory.class
+batalha_naval\dao\core\DAO.class
+batalha_naval\dao\core\DAOFactory.class
 module-info.class
+batalha_naval\controller\TelaLoginController.class
+batalha_naval\model\Filter\BarcoFilter.class
+batalha_naval\model\Filter\PessoaFilter.class
