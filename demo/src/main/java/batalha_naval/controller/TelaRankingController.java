@@ -47,8 +47,11 @@ public class TelaRankingController implements Initializable {
         TableColuna.setCellValueFactory(new PropertyValueFactory<Pessoa,Integer>("ponto"));
         TableNome.setCellValueFactory(new PropertyValueFactory<Pessoa,String>("nome"));
         try {
-            ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
-                    "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql", "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+            //ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
+                    //"silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql", "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+            //daoFactory = new DAOFactory(conexaoFactory);
+            //daoFactory.abrirConexao();
+            ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
             daoFactory = new DAOFactory(conexaoFactory);
             daoFactory.abrirConexao();
             PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);

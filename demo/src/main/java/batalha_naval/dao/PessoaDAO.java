@@ -9,6 +9,7 @@ import java.util.List;
 
 import batalha_naval.dao.core.GenericJDBCDAO;
 import batalha_naval.model.Pessoa;
+import batalha_naval.model.Filter.PessoaFilter;
 
 public class PessoaDAO extends GenericJDBCDAO<Pessoa, Long> {
     public PessoaDAO(Connection connection) {
@@ -91,22 +92,19 @@ public class PessoaDAO extends GenericJDBCDAO<Pessoa, Long> {
         return false;
     }
 
-    public List<Pessoa> findByname(String nome) {
+    public PessoaFilter findByname(String nome) {
         try {
             PreparedStatement statement = connection.prepareStatement(FIND_ALL_QUERY);
             statement.setString(1, nome);
             ResultSet resultSet = statement.executeQuery();
-            List<Pessoa> pessoas = new ArrayList<Pessoa>();
+            PessoaFilter pessoa = new PessoaFilter();
             while (resultSet.next()) {
-                Pessoa pessoa = new Pessoa();
                 pessoa.setNome(resultSet.getString("nome"));
-                pessoa.setSenha(resultSet.getString("senha"));
                 pessoa.setPonto(resultSet.getInt("ponto"));
                 pessoa.setAcertos(resultSet.getInt("acertos"));
                 pessoa.setErros(resultSet.getInt("erros"));
-                pessoas.add(pessoa);
             }
-            return pessoas;
+            return pessoa;
         } catch (SQLException e) {
             System.out.println("Erro ao buscar pessoa");
         }

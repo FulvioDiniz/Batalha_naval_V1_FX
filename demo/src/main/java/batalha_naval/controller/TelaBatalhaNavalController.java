@@ -1,5 +1,6 @@
 package batalha_naval.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -8,11 +9,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
 
-public class TelaBatalhaNavalController implements Initializable {
+import batalha_naval.dao.ConexaoFactoryPostgreSQL;
+import batalha_naval.dao.PessoaDAO;
+import batalha_naval.dao.core.DAOFactory;
+import batalha_naval.model.Pessoa;
+import batalha_naval.model.Filter.PessoaFilter;
+
+public class TelaBatalhaNavalController implements Initializable, Runnable {
 
     @FXML
     private GridPane GridPane1;
@@ -47,18 +54,26 @@ public class TelaBatalhaNavalController implements Initializable {
     @FXML
     private TextField TextFieldTempo;
 
-
     private Button[][] buttons1;
     private Button[][] buttons2;
+    private DAOFactory daoFactory;
+    private PessoaFilter Jogadorfilter1;
+    private PessoaFilter Jogadorfilter2;
+    private int contador = 0;
+
+    public PessoaFilter getJogadorfilter1() {
+        return Jogadorfilter1;
+    }
+
+    public PessoaFilter getJogadorfilter2() {
+        return Jogadorfilter2;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttons1 = new Button[10][10];
         buttons2 = new Button[10][10];
         EventHandler<ActionEvent> buttonClickHandler = new ButtonClickHandler();
-       
-
-
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
                 Button button1 = new Button();
@@ -80,9 +95,8 @@ public class TelaBatalhaNavalController implements Initializable {
                 GridPane2.add(button2, col, row);
             }
         }
-
-        
     }
+
     private class ButtonClickHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -92,7 +106,51 @@ public class TelaBatalhaNavalController implements Initializable {
         }
     }
 
+    @Override
+    public void run() {
+        while (true) {
+            System.out.println("Contador: " + contador);
+            if (contador == 0) {
+                CompletableFuture<Void> conexaoFuture = CompletableFuture.runAsync(() -> {
+                    try {
+                        /*
+                         * ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
+                         * "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql",
+                         * "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+                         * daoFactory = new DAOFactory(conexaoFactory);
+                         * daoFactory.abrirConexao();
+                         */
+                        ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
+                        daoFactory = new DAOFactory(conexaoFactory);
+                        daoFactory.abrirConexao();
+                        contador++;
+                    } catch (Exception e) {
+                        System.out.println("Erro ao conectar ao banco de dados");
+                    }
+                });
+                try {
+                    conexaoFuture.join(); // Aguarda a conclusão da conexão
+                    PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);
+                    Jogadorfilter1 = getJogadorfilter1();
+                    Jogadorfilter2 = getJogadorfilter2();
+                    TextFieldJogador1.setText(Jogadorfilter1.getNome());
+                    TextFieldJogador2.setText(Jogadorfilter2.getNome());
+                    System.out.println("Abriu??");
+                    contador++;
+                } catch (Exception e) {
+                    System.out.println("Erro ao abrir a conexão");
+                }
+            }
+
+            // Prossiga com o código após a abertura da conexão
+            if (daoFactory != null) {
+                Platform.runLater(() -> {
+                    TextFieldTempo.setText(String.valueOf(contador));
+                });
+            }
+
+            // Restante do código...
+
+        }
+    }
 }
-
-
-

@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 import batalha_naval.dao.ConexaoFactoryPostgreSQL;
 import batalha_naval.dao.PessoaDAO;
 import batalha_naval.dao.core.DAOFactory;
+import batalha_naval.model.Pessoa;
+import batalha_naval.model.Filter.PessoaFilter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,6 +45,9 @@ public class TelaLoginController implements Initializable {
     private Stage stageIniciarJogo;
     private Stage stageTelaCadastrar;
     private DAOFactory daoFactory;
+    private PessoaFilter Jogadorfilter1;
+    private PessoaFilter Jogadorfilter2;
+    private TelaBatalhaNavalController telaBatalhaNavalController;
 
     public void setDAOFactory(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
@@ -64,8 +69,14 @@ public class TelaLoginController implements Initializable {
             return false;
         } else {
             try {
-                ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
-                        "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql", "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+                /*
+                 * ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
+                 * "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql",
+                 * "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+                 * daoFactory = new DAOFactory(conexaoFactory);
+                 * daoFactory.abrirConexao();
+                 */
+                ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
                 daoFactory = new DAOFactory(conexaoFactory);
                 daoFactory.abrirConexao();
                 PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);
@@ -106,10 +117,35 @@ public class TelaLoginController implements Initializable {
     void ButtonJogarClicado(ActionEvent event) {
         if (loginEhValido()) {
             if (stageIniciarJogo.getOwner() == null) {
-                stageIniciarJogo.initOwner((Stage) ButtonJogar.getScene().getWindow());
-                Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                currentStage.hide();
-                stageIniciarJogo.show();
+                try {
+                    /*
+                     * ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
+                     * "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql",
+                     * "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+                     * daoFactory = new DAOFactory(conexaoFactory);
+                     * daoFactory.abrirConexao();
+                     */
+                    ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
+                    daoFactory = new DAOFactory(conexaoFactory);
+                    daoFactory.abrirConexao();
+                    PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);
+                    Jogadorfilter1 = new PessoaFilter();
+                    Jogadorfilter1 = dao.findByname(TextFieldNomeJogador1.getText());
+                    Jogadorfilter2 = new PessoaFilter();
+                    Jogadorfilter2 = dao.findByname(TextFieldNomeJogador2.getText());
+                    // TelaBatalhaNavalController run = new TelaBatalhaNavalController();
+                    // Thread thread = new Thread(run);
+                    // thread.start();
+                    TelaBatalhaNavalController iniciaBatalha = new TelaBatalhaNavalController();
+                    Thread thread = new Thread(iniciaBatalha);
+                    thread.start();
+                    stageIniciarJogo.initOwner((Stage) ButtonJogar.getScene().getWindow());
+                    Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    currentStage.hide();
+                    stageIniciarJogo.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             System.out.println("Login inválido");

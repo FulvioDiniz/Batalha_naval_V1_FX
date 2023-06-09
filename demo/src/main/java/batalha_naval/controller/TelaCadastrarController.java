@@ -1,6 +1,5 @@
 package batalha_naval.controller;
 
-
 import batalha_naval.dao.ConexaoFactoryPostgreSQL;
 import batalha_naval.dao.PessoaDAO;
 import batalha_naval.dao.core.DAOFactory;
@@ -11,8 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-
-public class TelaCadastrarController{
+public class TelaCadastrarController {
 
     @FXML
     private Button ButtonCadastrar;
@@ -42,8 +40,14 @@ public class TelaCadastrarController{
             return false;
         } else {
             try {
-                ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
-                        "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql", "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+                /*
+                 * ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
+                 * "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql",
+                 * "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+                 * daoFactory = new DAOFactory(conexaoFactory);
+                 * daoFactory.abrirConexao();
+                 */
+                ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
                 daoFactory = new DAOFactory(conexaoFactory);
                 daoFactory.abrirConexao();
                 daoFactory.getDAO(PessoaDAO.class);
@@ -77,15 +81,21 @@ public class TelaCadastrarController{
     void ButtonCadastrarClicado(ActionEvent event) {
         if (cadastrarEhValido()) {
             try {
-                ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
-                        "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql", "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+                /*
+                 * ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
+                 * "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql",
+                 * "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+                 * daoFactory = new DAOFactory(conexaoFactory);
+                 * daoFactory.abrirConexao();
+                 */
+                ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
                 daoFactory = new DAOFactory(conexaoFactory);
                 daoFactory.abrirConexao();
                 PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);
                 Pessoa pessoa = new Pessoa();
                 pessoa.setNome(TextFieldNomeJogador1.getText());
                 pessoa.setSenha(TextFieldSenhaJogador1.getText());
-                dao.cadastrarPessoa(TextFieldNomeJogador1.getText(),TextFieldSenhaJogador1.getText());
+                dao.cadastrarPessoa(TextFieldNomeJogador1.getText(), TextFieldSenhaJogador1.getText());
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Cadastro realizado");
                 alert.setHeaderText("Cadastro realizado");
@@ -107,9 +117,5 @@ public class TelaCadastrarController{
     void ButtonFecharCadastroClicado(ActionEvent event) {
         ((Button) event.getSource()).getScene().getWindow().hide();
     }
-
-
-    
-
 
 }
