@@ -42,13 +42,11 @@ public class TelaInicialController implements Initializable {
 
 
     private DAOFactory daoFactory;
-    private TelaLoginController telaLoginController;
 
     public TelaInicialController() {
-        ConnectionFactory connectionFactory = new ConexaoFactoryPostgreSQL(
-                "oaktlyql:NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u@silly.db.elephantsql.com/oaktlyql ", "oaktlyql",
-                "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
-               daoFactory = new DAOFactory(connectionFactory);
+              ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
+                        "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql", "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+                daoFactory = new DAOFactory(conexaoFactory);
     }
 
     @FXML
@@ -83,41 +81,40 @@ public class TelaInicialController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        Parent parent;
-        FXMLLoader fxmlLoader;
-        try {
-            stageIniciarJogo = new Stage();
-            fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaJogar.fxml"));
-            parent = fxmlLoader.load();
-            Scene scene = new Scene(parent);
-            stageIniciarJogo.setScene(scene);
-            stageIniciarJogo.setTitle("Batalha Naval");
-            stageIniciarJogo.setResizable(false);
-            stageIniciarJogo.initModality(Modality.APPLICATION_MODAL);
+public void initialize(URL url, ResourceBundle resourceBundle) {
+    Parent parent;
+    FXMLLoader fxmlLoader;
+    try {
+        stageIniciarJogo = new Stage();
+        fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaJogar.fxml"));
+        parent = fxmlLoader.load();
+        Scene scene = new Scene(parent);
+        stageIniciarJogo.setScene(scene);
+        stageIniciarJogo.setTitle("Batalha Naval");
+        stageIniciarJogo.setResizable(false);
+        stageIniciarJogo.initModality(Modality.APPLICATION_MODAL);
 
-            stageCadastrar = new Stage();
-            fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaCadastrar.fxml"));
-            parent = fxmlLoader.load();
-            telaLoginController = fxmlLoader.getController();
-            telaLoginController.setDAOFactory(daoFactory);
-            Scene scene2 = new Scene(parent);
-            stageCadastrar.setScene(scene2);
-            stageCadastrar.setTitle("Casdastrar Jogador");
-            stageCadastrar.setResizable(false);
-            stageCadastrar.initModality(Modality.APPLICATION_MODAL);
+        stageCadastrar = new Stage();
+        fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaCadastrar.fxml"));
+        parent = fxmlLoader.load();
+        TelaLoginController telaLoginController = fxmlLoader.getController();
+        telaLoginController.setDAOFactory(daoFactory); // Passando a instância de DAOFactory
+        Scene scene2 = new Scene(parent);
+        stageCadastrar.setScene(scene2);
+        stageCadastrar.setTitle("Cadastrar Jogador");
+        stageCadastrar.setResizable(false);
+        stageCadastrar.initModality(Modality.APPLICATION_MODAL);
 
-        } catch (Exception e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initModality(Modality.WINDOW_MODAL);
-            alert.setTitle("ERRO");
-            alert.setHeaderText("Erro");
-            alert.setContentText("Erro carregando a aplicação!");
-            alert.showAndWait();
-            // closes the javafx application
-            Platform.exit();
-
-        }
-
+    } catch (Exception e) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.setTitle("ERRO");
+        alert.setHeaderText("Erro");
+        alert.setContentText("Erro carregando a aplicação!");
+        alert.showAndWait();
+        // Fecha a aplicação JavaFX
+        Platform.exit();
     }
+}
+
 }

@@ -3,8 +3,8 @@ package batalha_naval.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import batalha_naval.dao.ConexaoFactoryPostgreSQL;
 import batalha_naval.dao.PessoaDAO;
-
 import batalha_naval.dao.core.DAOFactory;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,7 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 
 public class TelaLoginController implements Initializable {
 
@@ -48,10 +47,9 @@ public class TelaLoginController implements Initializable {
     public void setDAOFactory(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
-    
 
     private boolean loginEhValido() {
-        if(TextFieldNomeJogador1.getText().isEmpty() || TextFieldSenhaJogador1.getText().isEmpty()){
+        if (TextFieldNomeJogador1.getText().isEmpty() || TextFieldSenhaJogador1.getText().isEmpty() || TextFieldNomeJogador2.getText().isEmpty() || TextFieldSenhaJogador2.getText().isEmpty()) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.initModality(Modality.WINDOW_MODAL);
             alert.setTitle("ERRO");
@@ -59,15 +57,18 @@ public class TelaLoginController implements Initializable {
             alert.setContentText("Preencha todos os campos!");
             alert.showAndWait();
             return false;
-        }
-        else{
+        } else {
             try {
+                ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
+                        "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql", "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
+                daoFactory = new DAOFactory(conexaoFactory);
                 daoFactory.abrirConexao();
                 PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);
-                if(dao.findByNameAndPassword(TextFieldNomeJogador1.getText(),TextFieldSenhaJogador1.getText())){
-                    return true;
-                }
-                else{
+                if (dao.findByNameAndPassword(TextFieldNomeJogador1.getText(), TextFieldSenhaJogador1.getText()) && dao.findByNameAndPassword(TextFieldNomeJogador2.getText(), TextFieldSenhaJogador2.getText())) {
+                    //System.out.println("Login válido");
+                    daoFactory.fecharConexao();
+                    return true;                    
+                } else {
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.initModality(Modality.WINDOW_MODAL);
                     alert.setTitle("ERRO");
@@ -96,45 +97,41 @@ public class TelaLoginController implements Initializable {
     }
 
     @FXML
-void ButtonJogarClicado(ActionEvent event) {
-    if (loginEhValido()) {
-        if (stageIniciarJogo.getOwner() == null) {
-            stageIniciarJogo.initOwner((Stage) ButtonJogar.getScene().getWindow());
-        }
-        Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        currentStage.hide();
-        stageIniciarJogo.show();
-
-    } else {
-        // problema em abrir a tela
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaCadastrar.fxml"));
-            Parent parent = fxmlLoader.load();
-            Scene scene2 = new Scene(parent);
-            stageTelaCadastrar.setScene(scene2); 
-            stageTelaCadastrar.setTitle("Batalha Naval");
-            stageTelaCadastrar.setResizable(false);
-            stageTelaCadastrar.initModality(Modality.APPLICATION_MODAL);
-
+    void ButtonJogarClicado(ActionEvent event) {
+        if (loginEhValido()) {
+            if (stageIniciarJogo.getOwner() == null) {
+                stageIniciarJogo.initOwner((Stage) ButtonJogar.getScene().getWindow());
+            }
             Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             currentStage.hide();
-            stageTelaCadastrar.show();
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initModality(Modality.WINDOW_MODAL);
-            alert.setTitle("ERRO");
-            alert.setHeaderText("Erro");
-            alert.setContentText("Erro ao carregar a aplicação!");
-            alert.showAndWait();
-            // fecha a aplicação JavaFX
-            Platform.exit();
-        }        
-    }
-}
+            stageIniciarJogo.show();
 
-    
+        } else {
+            // problema em abrir a tela
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaCadastrar.fxml"));
+                Parent parent = fxmlLoader.load();
+                Scene scene2 = new Scene(parent);
+                stageTelaCadastrar.setScene(scene2);
+                stageTelaCadastrar.setTitle("Batalha Naval");
+                stageTelaCadastrar.setResizable(false);
+                stageTelaCadastrar.initModality(Modality.APPLICATION_MODAL);
+                Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                currentStage.hide();
+                stageTelaCadastrar.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.initModality(Modality.WINDOW_MODAL);
+                alert.setTitle("ERRO");
+                alert.setHeaderText("Erro");
+                alert.setContentText("Erro ao carregar a aplicação!");
+                alert.showAndWait();
+                // fecha a aplicação JavaFX
+                Platform.exit();
+            }
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -149,7 +146,6 @@ void ButtonJogarClicado(ActionEvent event) {
             stageIniciarJogo.setTitle("Batalha Naval");
             stageIniciarJogo.setResizable(false);
             stageIniciarJogo.initModality(Modality.APPLICATION_MODAL);
-
 
         } catch (Exception e) {
             Alert alert = new Alert(AlertType.ERROR);
