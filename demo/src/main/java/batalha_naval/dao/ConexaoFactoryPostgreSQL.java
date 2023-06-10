@@ -8,12 +8,21 @@ import batalha_naval.dao.core.ConnectionFactory;
 
 public class ConexaoFactoryPostgreSQL implements ConnectionFactory {
     
-    /*private String dbURL = "jdbc:postgresql://silly.db.elephantsql.com:5432/oaktlyql";
-    private String user = "oaktlyql";
-    private String password = "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u";*/
+    /*
+    local: 
+
     private String dbURL = "jdbc:postgresql://localhost:5432/Teste2";
     private String user = "postgres";
     private String password = "123";
+        
+    private String dbURL = "jdbc:postgresql://silly.db.elephantsql.com:5432/oaktlyql";
+    private String user = "oaktlyql";
+    private String password = "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u";*/
+
+    
+    private String dbURL = "jdbc:postgresql://silly.db.elephantsql.com:5432/oaktlyql";
+    private String user = "oaktlyql";
+    private String password = "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u";
     private static final String classeDriver = "org.postgresql.Driver";    
  
 

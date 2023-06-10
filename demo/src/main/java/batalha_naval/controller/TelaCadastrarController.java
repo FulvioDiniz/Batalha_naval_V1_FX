@@ -40,13 +40,6 @@ public class TelaCadastrarController {
             return false;
         } else {
             try {
-                /*
-                 * ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
-                 * "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql",
-                 * "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
-                 * daoFactory = new DAOFactory(conexaoFactory);
-                 * daoFactory.abrirConexao();
-                 */
                 ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
                 daoFactory = new DAOFactory(conexaoFactory);
                 daoFactory.abrirConexao();
@@ -81,13 +74,6 @@ public class TelaCadastrarController {
     void ButtonCadastrarClicado(ActionEvent event) {
         if (cadastrarEhValido()) {
             try {
-                /*
-                 * ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
-                 * "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql",
-                 * "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
-                 * daoFactory = new DAOFactory(conexaoFactory);
-                 * daoFactory.abrirConexao();
-                 */
                 ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
                 daoFactory = new DAOFactory(conexaoFactory);
                 daoFactory.abrirConexao();

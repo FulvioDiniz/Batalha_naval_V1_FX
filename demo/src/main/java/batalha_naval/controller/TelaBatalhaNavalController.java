@@ -1,8 +1,8 @@
 package batalha_naval.controller;
 
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,15 +11,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-
-
 import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import batalha_naval.dao.ConexaoFactoryPostgreSQL;
 import batalha_naval.dao.PessoaDAO;
 import batalha_naval.dao.core.DAOFactory;
@@ -37,28 +34,28 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
     private Text LabelTempo;
 
     @FXML
+    private Text LabelAcertoJogador1;
+
+    @FXML
+    private Text LabelAcertoJogador2;
+
+    @FXML
+    private Text LabelErrosJogador12;
+
+    @FXML
+    private Text LabelErrosJogador2;
+
+    @FXML
     private GridPane GridPane1;
 
     @FXML
     private GridPane GridPane2;
 
     @FXML
-    private TextField TextFieldAcertos1;
+    private Text LabelPontosJogador1;
 
     @FXML
-    private TextField TextFieldAcertos2;
-
-    @FXML
-    private TextField TextFieldErros1;
-
-    @FXML
-    private TextField TextFieldErros2;
-
-    @FXML
-    private TextField TextFieldPonto1;
-
-    @FXML
-    private TextField TextFieldPonto2;
+    private Text LabelPontosJogador2;
 
     @FXML
     private Text NomeJogador1;
@@ -75,8 +72,10 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
     private String nomeJogador1;
     private String nomeJogador2;
     private DAOFactory daoFactory;
+    private Runnable myRunnable;
 
     public TelaBatalhaNavalController() {
+        // Thread threadVerificaBarcos = new Thread(myRunnable);
         Thread thread = new Thread(this);
         thread.start();
     }
@@ -99,10 +98,20 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         return nomeJogador2;
     }
 
+    public void inicializarCampos() {
+        LabelPontosJogador1.setText("0");
+        LabelPontosJogador2.setText("0");
+        LabelAcertoJogador1.setText("0");
+        LabelAcertoJogador2.setText("0");
+        LabelErrosJogador12.setText("0");
+        LabelErrosJogador2.setText("0");
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttons1 = new Button[10][10];
         buttons2 = new Button[10][10];
+        inicializarCampos();
         EventHandler<ActionEvent> buttonClickHandler = new ButtonClickHandler();
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
@@ -113,6 +122,14 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                 button1.setOnAction(buttonClickHandler);
                 button1.setText("button1[" + row + "][" + col + "]]");
                 button1.setUserData("Agua");
+                button1.setOnMouseEntered(event -> {
+                    Button b = (Button) event.getSource();
+                    b.setStyle("-fx-background-color: red; -fx-border-color: black; -fx-text-fill: red");
+                });
+                button1.setOnMouseExited(event -> {
+                    Button b = (Button) event.getSource();
+                    b.setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+                });
                 GridPane1.add(button1, col, row);
 
                 Button button2 = new Button();
@@ -121,17 +138,30 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                 buttons2[row][col] = button2;
                 button2.setText("button2[" + row + "][" + col + "]]");
                 button2.setUserData("Agua");
+                if (button2.getUserData().equals("Agua")) {
+                    button2.setOnMouseEntered(event -> {
+                        Button b = (Button) event.getSource();
+                        b.setStyle("-fx-background-color: red; -fx-border-color: black; -fx-text-fill: red");
+                    });
+                    button2.setOnMouseExited(event -> {
+                        Button b = (Button) event.getSource();
+                        b.setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+                    });
+                }
                 button2.setOnAction(buttonClickHandler);
                 GridPane2.add(button2, col, row);
             }
         }
+        threadVerificaBarcos verificaBarcos = new threadVerificaBarcos();
+        verificaBarcos.start(); 
     }
 
     private class ButtonClickHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
             Button clickedButton = (Button) event.getSource();
-            // Faça algo com o botão clicado
+            clickedButton.setUserData("Barco");
+            clickedButton.setStyle("-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
             System.out.println("Botão clicado: " + clickedButton.getText() + "valor" + clickedButton.getUserData());
         }
     }
@@ -163,7 +193,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             LabelNomeJogador1.setText(getNomeJogador1());
             labelNomeJogador2.setText(getNomeJogador2());
 
-            // Atualize os outros componentes conforme necessário
+            // Atualize os campos
         });
     }
 
@@ -175,10 +205,37 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             } catch (InterruptedException e) {
                 break;
             }
+            /*
+             * for(int i = 0; i < 10; i++){
+             * for(int j = 0; j < 10; j++){
+             * if(buttons1[i][j].getUserData().equals("Barco")){
+             * buttons1[i][j].
+             * setStyle("-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green"
+             * );
+             * }
+             * }
+             * }
+             */
             Duration duracao = Duration.between(tempoinicial, Instant.now());
             this.duracao = duracao;
             System.out.println(duracao.getSeconds() + "s");
             atualizarTela();
+        }
+    }
+
+    public class threadVerificaBarcos extends Thread {
+        @Override
+        public void run() {
+            while (!Thread.currentThread().isInterrupted()) {
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 0; j < 10; j++) {
+                        if (buttons1[i][j].getUserData().equals("Barco")) {
+                            buttons1[i][j].setStyle(
+                                    "-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
+                        }
+                    }
+                }
+            }
         }
     }
 

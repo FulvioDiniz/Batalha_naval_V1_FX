@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -46,21 +45,21 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TextField fx:id="TextFieldPonto1" disable="true" editable="false" layoutX="13.0" layoutY="48.0" />
                   <Text layoutX="21.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pontos" textAlignment="CENTER" wrappingWidth="131.13671875" />
                   <Text layoutX="21.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Acertos" textAlignment="CENTER" wrappingWidth="131.13671875" />
-                  <TextField fx:id="TextFieldAcertos1" disable="true" editable="false" layoutX="13.0" layoutY="139.0" />
                   <Text layoutX="21.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Erros" textAlignment="CENTER" wrappingWidth="131.13671875" />
-                  <TextField fx:id="TextFieldErros1" disable="true" editable="false" layoutX="12.0" layoutY="199.0" />
+                  <Text fx:id="LabelPontosJogador1" layoutX="63.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="47.98437499999977" />
+                  <Text fx:id="LabelAcertoJogador1" layoutX="63.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="47.98437499999977" />
+                  <Text fx:id="LabelErrosJogador12" layoutX="63.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="47.98437499999977" />
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="551.0" prefWidth="178.0">
                <children>
                   <Text layoutX="28.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pontos" textAlignment="CENTER" wrappingWidth="131.13671875" />
-                  <TextField fx:id="TextFieldPonto2" disable="true" editable="false" layoutX="19.0" layoutY="46.0" />
                   <Text layoutX="23.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Acertos" textAlignment="CENTER" wrappingWidth="131.13671875" />
-                  <TextField fx:id="TextFieldAcertos2" disable="true" editable="false" layoutX="19.0" layoutY="139.0" />
                   <Text layoutX="23.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Erros" textAlignment="CENTER" wrappingWidth="131.13671875" />
-                  <TextField fx:id="TextFieldErros2" disable="true" editable="false" layoutX="14.0" layoutY="197.0" />
+                  <Text fx:id="LabelPontosJogador2" layoutX="70.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="47.98437499999977" />
+                  <Text fx:id="LabelAcertoJogador2" layoutX="65.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="47.98437499999977" />
+                  <Text fx:id="LabelErrosJogador2" layoutX="65.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="47.98437499999977" />
                </children></AnchorPane>
         </items>
       </SplitPane>
