@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
 import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
@@ -94,13 +96,10 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
     private DAOFactory daoFactory;
     private Barco barco;
     private String nomeBarco;
+    private Stage primaryStage;
     private int contadordeSubmarinos = 0;
-
-    public TelaBatalhaNavalController() {
-        // Thread threadVerificaBarcos = new Thread(myRunnable);
-        Thread thread = new Thread(this);
-        thread.start();
-    }
+    private int contadordePortaAvioes = 0;
+    private int contadordeCouracados = 0;
 
     public void setNomeJogador1(String text) {
         this.nomeJogador1 = text;
@@ -136,6 +135,23 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         LabelErrosJogador12.setText("0");
         LabelErrosJogador2.setText("0");
         // TituloLabel.setText("Posicione o seu barco Jogador " + getNomeJogador1());
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    public Stage getPrimaryStage(Stage primaryStage) {
+        return primaryStage;
+    }
+
+    private void configurarEncerramentoJanela() {
+        primaryStage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+            Thread.currentThread().interrupt();
+            threadVerificaBarcos.currentThread().interrupt();
+        });
     }
 
     @Override
@@ -193,12 +209,21 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                 GridPane2.add(button2, col, row);
             }
         }
+        Thread thread = new Thread(this);
+        thread.start();
         threadVerificaBarcos verificaBarcos = new threadVerificaBarcos();
         verificaBarcos.start();
     }
 
     @FXML
     void ButtonCoura1Clicado(ActionEvent event) {
+        nomeBarco = "Couracado";
+        setNomeBarco("Couracado");
+        System.out.println("Couracado clicado" + contadordeCouracados + "vezes");
+        if (contadordeCouracados == 1) {
+            ButtonCoura1.disableProperty().set(true);
+        }
+        contadordeCouracados++;
 
     }
 
@@ -209,7 +234,14 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
 
     @FXML
     void ButtonPorta1Clicado(ActionEvent event) {
+        nomeBarco = "PortaAvioes";
+        setNomeBarco("PortaAvioes");
+        System.out.println("Porta Avioes clicado" + contadordePortaAvioes + "vezes");
+        if (contadordePortaAvioes < 2) {
+            ButtonPorta1.disableProperty().set(true);
 
+        }
+        contadordePortaAvioes++;
     }
 
     @FXML
@@ -219,15 +251,13 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
 
     @FXML
     void ButtonSub1Clicado(ActionEvent event) {
-        contadordeSubmarinos++;
-        if (contadordeSubmarinos != 6) {
-            nomeBarco = "Submarino";
-            setNomeBarco("Submarino");
-            System.out.println("Submarino clicado" + contadordeSubmarinos + "vezes");
-        }
-        else{
+        nomeBarco = "Submarino";
+        setNomeBarco("Submarino");
+        System.out.println("Submarino clicado" + contadordeSubmarinos + "vezes");
+        if (contadordeSubmarinos < 6) {
             ButtonSub1.disableProperty().set(true);
         }
+        contadordeSubmarinos++;
 
     }
 
@@ -244,10 +274,20 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                 clickedButton.setUserData("Submarino");
                 clickedButton.setStyle("-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
                 System.out.println("Botão clicado: " + clickedButton.getText() + "valor" + clickedButton.getUserData());
+                nomeBarco = "";
             }
-            clickedButton.setUserData("Barco");
-            clickedButton.setStyle("-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
-            System.out.println("Botão clicado: " + clickedButton.getText() + "valor" + clickedButton.getUserData());
+            if (nomeBarco.equals("PortaAvioes")) {
+                clickedButton.setUserData("PortaAvioes");
+                clickedButton.setStyle("-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
+                System.out.println("Botão clicado: " + clickedButton.getText() + "valor" + clickedButton.getUserData());
+                nomeBarco = "";
+            }
+            if (nomeBarco.equals("Couracado")) {
+                clickedButton.setUserData("Couracado");
+                clickedButton.setStyle("-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
+                System.out.println("Botão clicado: " + clickedButton.getText() + "valor" + clickedButton.getUserData());
+                nomeBarco = "";
+            }
         }
     }
 
@@ -291,6 +331,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             } catch (InterruptedException e) {
                 break;
             }
+            configurarEncerramentoJanela();
             Duration duracao = Duration.between(tempoinicial, Instant.now());
             this.duracao = duracao;
             System.out.println(duracao.getSeconds() + "s");
@@ -304,7 +345,9 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             while (!Thread.currentThread().isInterrupted()) {
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
-                        if (buttons1[i][j].getUserData().equals("Barco")) {
+                        if (buttons1[i][j].getUserData().equals("Submarino")
+                                || buttons1[i][j].getUserData().equals("PortaAvioes")
+                                || buttons1[i][j].getUserData().equals("Couracado")) {
                             buttons1[i][j].setStyle(
                                     "-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
                         }

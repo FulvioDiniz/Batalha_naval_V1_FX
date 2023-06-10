@@ -184,6 +184,7 @@ public class TelaLoginController {
             TelaBatalhaNavalController controller = fxmlLoader.getController();
             controller.setNomeJogador1(TextFieldNomeJogador1.getText());
             controller.setNomeJogador2(TextFieldNomeJogador2.getText());
+            controller.setPrimaryStage(stageIniciarJogo);
             Scene scene = new Scene(parent);
             stageIniciarJogo.setScene(scene);
             stageIniciarJogo.setTitle("Batalha Naval");

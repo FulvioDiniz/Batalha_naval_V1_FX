@@ -1,6 +1,6 @@
 package batalha_naval.model;
 
-import java.sql.Date;
+
 
 public class Barco {
     private EnumBarco.Barco tipo;
