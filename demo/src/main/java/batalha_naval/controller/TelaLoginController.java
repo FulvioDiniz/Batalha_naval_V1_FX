@@ -39,11 +39,15 @@ public class TelaLoginController {
     @FXML
     private TextField TextFieldSenhaJogador2;
 
+    
+
     private Stage stageIniciarJogo;
     private Stage stageTelaCadastrar;
     private DAOFactory daoFactory;
     private PessoaFilter Jogadorfilter1;
     private PessoaFilter Jogadorfilter2;
+    private String nomeJogador1;
+    private String nomeJogador2;
 
     public void setDAOFactory(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
@@ -51,6 +55,22 @@ public class TelaLoginController {
 
     public DAOFactory getDAOFactory() {
         return daoFactory;
+    }
+
+    public String getNomeJogador1() {
+        return nomeJogador1;
+    }
+
+    public String getNomeJogador2() {
+        return nomeJogador2;
+    }
+
+    public void setNomeJogador1(String nomeJogador1) {
+        this.nomeJogador1 = nomeJogador1;
+    }
+
+    public void setNomeJogador2(String nomeJogador2) {
+        this.nomeJogador2 = nomeJogador2;
     }
 
     private boolean loginEhValido() {
@@ -65,20 +85,17 @@ public class TelaLoginController {
             return false;
         } else {
             try {
-                /*
-                 * ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
-                 * "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql",
-                 * "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
-                 * daoFactory = new DAOFactory(conexaoFactory);
-                 * daoFactory.abrirConexao();
-                 */
                 ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
                 daoFactory = new DAOFactory(conexaoFactory);
                 daoFactory.abrirConexao();
                 PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);
                 if (dao.findByNameAndPassword(TextFieldNomeJogador1.getText(), TextFieldSenhaJogador1.getText()) && dao
                         .findByNameAndPassword(TextFieldNomeJogador2.getText(), TextFieldSenhaJogador2.getText())) {
-                    // System.out.println("Login válido");
+                    // System.out.println("Login válido");  
+                    Jogadorfilter1 = new PessoaFilter();
+                    Jogadorfilter1.setNome(TextFieldNomeJogador1.getText());
+                    Jogadorfilter2 = new PessoaFilter();
+                    Jogadorfilter2.setNome(TextFieldNomeJogador2.getText());
                     daoFactory.fecharConexao();
                     return true;
                 } else {
@@ -115,30 +132,11 @@ public class TelaLoginController {
             abrirTelaJogo();
             if (stageIniciarJogo.getOwner() == null) {
                 try {
-                    /*
-                     * ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL(
-                     * "silly.db.elephantsql.com:5432/oaktlyql", "oaktlyql",
-                     * "NUA1m5sBKJWVgSj1rRhPmabFT0-Ayc_u");
-                     * daoFactory = new DAOFactory(conexaoFactory);
-                     * daoFactory.abrirConexao();
-                     */
-                    ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
-                    daoFactory = new DAOFactory(conexaoFactory);
-                    daoFactory.abrirConexao();
-                    PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);
-                    Jogadorfilter1 = new PessoaFilter();
-                    Jogadorfilter1 = dao.findByname(TextFieldNomeJogador1.getText());
-                    Jogadorfilter2 = new PessoaFilter();
-                    Jogadorfilter2 = dao.findByname(TextFieldNomeJogador2.getText());
-                    TelaBatalhaNavalController iniciaBatalha = new TelaBatalhaNavalController(Jogadorfilter1,
-                            Jogadorfilter2);
-                    Thread thread = new Thread(iniciaBatalha);
-                    thread.start();
                     stageIniciarJogo.initOwner((Stage) ButtonJogar.getScene().getWindow());
                     Stage currentStage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                     currentStage.hide();
                     stageIniciarJogo.show();
-                    daoFactory.fecharConexao();
+                    //daoFactory.fecharConexao();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -183,6 +181,9 @@ public class TelaLoginController {
             stageIniciarJogo = new Stage();
             fxmlLoader = new FXMLLoader(getClass().getResource("/resources/poov/telas/TelaBatalhaNaval.fxml"));
             parent = fxmlLoader.load();
+            TelaBatalhaNavalController controller = fxmlLoader.getController();
+            controller.setNomeJogador1(TextFieldNomeJogador1.getText());
+            controller.setNomeJogador2(TextFieldNomeJogador2.getText());
             Scene scene = new Scene(parent);
             stageIniciarJogo.setScene(scene);
             stageIniciarJogo.setTitle("Batalha Naval");

@@ -6,23 +6,35 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.stage.WindowEvent;
 
 import java.net.URL;
-
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.CompletableFuture;
 
 import batalha_naval.dao.ConexaoFactoryPostgreSQL;
 import batalha_naval.dao.PessoaDAO;
 import batalha_naval.dao.core.DAOFactory;
-
+import batalha_naval.model.Pessoa;
 import batalha_naval.model.Filter.PessoaFilter;
 
 public class TelaBatalhaNavalController implements Initializable, Runnable {
+
+    @FXML
+    private Text labelNomeJogador2;
+
+    @FXML
+    private Text LabelNomeJogador1;
+
+    @FXML
+    private Text LabelTempo;
 
     @FXML
     private GridPane GridPane1;
@@ -43,50 +55,48 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
     private TextField TextFieldErros2;
 
     @FXML
-    private TextField TextFieldJogador1;
-
-    @FXML
-    private TextField TextFieldJogador2;
-
-    @FXML
     private TextField TextFieldPonto1;
 
     @FXML
     private TextField TextFieldPonto2;
 
     @FXML
-    private TextField TextFieldTempo;
+    private Text NomeJogador1;
+
+    @FXML
+    private Label Labeltext;
 
     private Button[][] buttons1;
     private Button[][] buttons2;
-    private DAOFactory daoFactory;
-    private PessoaFilter Jogadorfilter1;
-    private PessoaFilter Jogadorfilter2;
-    private int contador = 0;
     private Instant tempoinicial = Instant.now();
     private Duration duracao;
+    private PessoaFilter Jogadorfilter1;
+    private PessoaFilter Jogadorfilter2;
+    private String nomeJogador1;
+    private String nomeJogador2;
+    private DAOFactory daoFactory;
 
     public TelaBatalhaNavalController() {
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
-    public TelaBatalhaNavalController(PessoaFilter Jogadorfilter1, PessoaFilter Jogadorfilter2) {
-        inicializarVariaveis();
-        this.Jogadorfilter1 = Jogadorfilter1;
-        this.Jogadorfilter2 = Jogadorfilter2;
+    public void setNomeJogador1(String text) {
+        this.nomeJogador1 = text;
 
     }
 
-    private void inicializarVariaveis() {
-        TextFieldJogador1 = new TextField();
-        TextFieldJogador2 = new TextField();
-        TextFieldAcertos1 = new TextField();
-        TextFieldAcertos2 = new TextField();
-        TextFieldErros1 = new TextField();
-        TextFieldErros2 = new TextField();
-        TextFieldPonto1 = new TextField();
-        TextFieldPonto2 = new TextField();
-        TextFieldTempo = new TextField();
+    public void setNomeJogador2(String text) {
+        this.nomeJogador2 = text;
 
+    }
+
+    public String getNomeJogador1() {
+        return nomeJogador1;
+    }
+
+    public String getNomeJogador2() {
+        return nomeJogador2;
     }
 
     @Override
@@ -126,51 +136,49 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         }
     }
 
+    private List<PessoaFilter> dadosBanco(String nome1, String nome2) {
+        try {
+            ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
+            daoFactory = new DAOFactory(conexaoFactory);
+            daoFactory.abrirConexao();
+            PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);
+            List<PessoaFilter> lista = new ArrayList<>();
+            Jogadorfilter1 = new PessoaFilter();
+            Jogadorfilter1 = dao.findByname(nome1);
+            Jogadorfilter2 = new PessoaFilter();
+            Jogadorfilter2 = dao.findByname(nome2);
+            lista.add(Jogadorfilter1);
+            lista.add(Jogadorfilter2);
+            daoFactory.fecharConexao();
+            return lista;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private void atualizarTela() {
         Platform.runLater(() -> {
-            TextFieldJogador1.setText(Jogadorfilter1.getNome());
-            TextFieldJogador2.setText(Jogadorfilter2.getNome());
-            TextFieldTempo.setText(duracao.getSeconds() + "s");
+            LabelTempo.setText(duracao.getSeconds() + "s");
+            LabelNomeJogador1.setText(getNomeJogador1());
+            labelNomeJogador2.setText(getNomeJogador2());
+
             // Atualize os outros componentes conforme necessário
         });
     }
 
     @Override
     public void run() {
-        while (true) {
-            System.out.println("Contador: " + contador);
-            if (contador == 0) {
-                CompletableFuture<Void> conexaoFuture = CompletableFuture.runAsync(() -> {
-                    try {
-                        ConexaoFactoryPostgreSQL conexaoFactory = new ConexaoFactoryPostgreSQL();
-                        daoFactory = new DAOFactory(conexaoFactory);
-                        daoFactory.abrirConexao();
-                        contador++;
-                    } catch (Exception e) {
-                        System.out.println("Erro ao conectar ao banco de dados");
-                    }
-                });
-                try {
-                    conexaoFuture.join(); // Aguarda a conclusão da conexão
-                    PessoaDAO dao = daoFactory.getDAO(PessoaDAO.class);
-                    System.out.println("Abriu??");
-                    contador++;
-                    daoFactory.fecharConexao();
-                } catch (Exception e) {
-                    System.out.println("Erro ao abrir a conexão");
-                }
-            }
+        while (!Thread.currentThread().isInterrupted()) {
             try {
                 Thread.sleep(1000);
-                Duration duracao = Duration.between(tempoinicial, Instant.now());
-                this.duracao = duracao;
-                atualizarTela(); // Chama o método para atualizar a tela
-                System.out.println(TextFieldTempo.getText());
-                System.out.println(TextFieldJogador1.getText());// Atualiza a tela
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                return;
+                break;
             }
+            Duration duracao = Duration.between(tempoinicial, Instant.now());
+            this.duracao = duracao;
+            System.out.println(duracao.getSeconds() + "s");
+            atualizarTela();
         }
     }
 }

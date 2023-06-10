@@ -90,18 +90,33 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <TextField fx:id="TextFieldJogador1" disable="true" editable="false" layoutX="165.0" layoutY="159.0" />
-      <TextField fx:id="TextFieldJogador2" disable="true" editable="false" layoutX="989.0" layoutY="159.0" />
-      <TextField fx:id="TextFieldTempo" disable="true" editable="false" layoutX="574.0" layoutY="184.0" />
-      <Text layoutX="632.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tempo" />
-      <Text layoutX="213.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jogador:">
+      <Text layoutX="623.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tempo">
          <font>
-            <Font size="14.0" />
+            <Font size="18.0" />
+         </font></Text>
+      <Text fx:id="NomeJogador1" layoutX="198.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jogador 1:">
+         <font>
+            <Font size="18.0" />
          </font>
       </Text>
-      <Text layoutX="1037.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jogador:">
+      <Text fx:id="NomeJogador11" layoutX="1022.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jogador 2:">
          <font>
-            <Font size="14.0" />
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="LabelNomeJogador1" layoutX="211.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="55.4765625">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="labelNomeJogador2" layoutX="1035.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="55.4765625">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="LabelTempo" layoutX="632.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="36.98437499999977">
+         <font>
+            <Font size="18.0" />
          </font>
       </Text>
    </children>
