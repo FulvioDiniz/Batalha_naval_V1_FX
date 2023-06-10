@@ -1,5 +1,6 @@
 package batalha_naval.controller;
 
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.WindowEvent;
+
 
 import java.net.URL;
 import java.time.Duration;
@@ -22,7 +23,6 @@ import java.util.ResourceBundle;
 import batalha_naval.dao.ConexaoFactoryPostgreSQL;
 import batalha_naval.dao.PessoaDAO;
 import batalha_naval.dao.core.DAOFactory;
-import batalha_naval.model.Pessoa;
 import batalha_naval.model.Filter.PessoaFilter;
 
 public class TelaBatalhaNavalController implements Initializable, Runnable {
@@ -181,4 +181,5 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             atualizarTela();
         }
     }
+
 }
