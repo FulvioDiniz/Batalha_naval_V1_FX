@@ -102,6 +102,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
     private int contadordePortaAvioes = 0;
     private int contadordeCouracados = 0;
     // private boolean validador = false;
+    private boolean validadorPosicionamento = false;
 
     public void setNomeJogador1(String text) {
         this.nomeJogador1 = text;
@@ -255,9 +256,10 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         nomeBarco = "Submarino";
         setNomeBarco("Submarino");
         System.out.println("Submarino clicado" + contadordeSubmarinos + "vezes");
-        if (contadordeSubmarinos == 5) {
+        if (contadordeSubmarinos == 4) {
             ButtonSub1.disableProperty().set(true);
         }
+        if(validadorPosicionamento)
         contadordeSubmarinos++;
 
     }
@@ -273,21 +275,50 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             Button clickedButton = (Button) event.getSource();
             int row = GridPane.getRowIndex(clickedButton);
             int col = GridPane.getColumnIndex(clickedButton);
-            boolean validador = false;
-            if (nomeBarco.equals("Submarino") && clickedButton.getUserData().equals("Agua")) {
-                if (row != 0) {
-                    Button botaoAcima = buttons1[row - 1][col];
-                    if (botaoAcima.getUserData().equals("Agua")) {
-                        clickedButton.setUserData("Submarino");
-                        botaoAcima.setUserData("Submarino");
+            if (nomeBarco.equals("Submarino") && clickedButton.getUserData().equals("Agua")) {   
+                    Boolean validador2 = true;
+                    Boolean validadorSubmarino = true;
+
+                       for (int i = 0; i < 2; i++) {
+                    if (row - i >= 0) { // Verifica se o índice é válido
+                        Button botaoAcima = buttons1[row - i][col];
+                        if (!botaoAcima.getUserData().equals("Agua")) {
+                            validador2 = false;
+                            break;
+                        }
                     } else {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Erro");
-                        alert.setHeaderText("Erro ao colocar o submarino");
-                        alert.setContentText("O submarino não pode ser colocado aqui");
-                        alert.showAndWait();
+                        validador2 = false;
+                        break;
                     }
                 }
+
+                if (validador2) {
+                    for (int j = 0; j < 2; j++) {
+                        if (row - j >= 0 && col >= 0) { // Verifica se os índices são válidos
+                            Button botaoAcima2 = buttons1[row - j][col];
+                            clickedButton.setUserData("Submarino");
+                            botaoAcima2.setUserData("Submarino");
+                            validadorPosicionamento = true;
+                        } else {
+                            validadorSubmarino = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (!validadorSubmarino || !validador2) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Erro");
+                    alert.setHeaderText("Erro ao posicionar o barco");
+                    alert.setContentText("O Submarino não pode ser posicionado aqui");
+                    if (contadordeSubmarinos > 0) {
+                        contadordeSubmarinos--;
+                        ButtonSub1.disableProperty().set(false);
+                    }
+
+                    alert.showAndWait();
+                }
+
                 nomeBarco = "";
             }
             if (nomeBarco.equals("PortaAvioes") && clickedButton.getUserData().equals("Agua")) {
