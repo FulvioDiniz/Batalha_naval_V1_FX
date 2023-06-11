@@ -224,7 +224,6 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             ButtonCoura1.disableProperty().set(true);
         }
         contadordeCouracados++;
-
     }
 
     @FXML
@@ -237,7 +236,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         nomeBarco = "PortaAvioes";
         setNomeBarco("PortaAvioes");
         System.out.println("Porta Avioes clicado" + contadordePortaAvioes + "vezes");
-        if (contadordePortaAvioes < 2) {
+        if (contadordePortaAvioes == 2) {
             ButtonPorta1.disableProperty().set(true);
 
         }
@@ -254,7 +253,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         nomeBarco = "Submarino";
         setNomeBarco("Submarino");
         System.out.println("Submarino clicado" + contadordeSubmarinos + "vezes");
-        if (contadordeSubmarinos < 6) {
+        if (contadordeSubmarinos == 6) {
             ButtonSub1.disableProperty().set(true);
         }
         contadordeSubmarinos++;
@@ -270,10 +269,14 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         @Override
         public void handle(ActionEvent event) {
             Button clickedButton = (Button) event.getSource();
+            int row = GridPane.getRowIndex(clickedButton);
+            int col = GridPane.getColumnIndex(clickedButton);
             if (nomeBarco.equals("Submarino")) {
-                clickedButton.setUserData("Submarino");
-                clickedButton.setStyle("-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
-                System.out.println("Botão clicado: " + clickedButton.getText() + "valor" + clickedButton.getUserData());
+                if (row != 0) {
+                    Button botaoAcima = buttons1[row - 1][col];
+                    clickedButton.setUserData("Submarino");                    
+                    botaoAcima.setUserData("Submarino");
+                }
                 nomeBarco = "";
             }
             if (nomeBarco.equals("PortaAvioes")) {
@@ -334,7 +337,6 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             configurarEncerramentoJanela();
             Duration duracao = Duration.between(tempoinicial, Instant.now());
             this.duracao = duracao;
-            System.out.println(duracao.getSeconds() + "s");
             atualizarTela();
         }
     }
