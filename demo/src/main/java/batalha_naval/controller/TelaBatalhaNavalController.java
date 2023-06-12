@@ -218,7 +218,6 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         verificaBarcos.start();
     }
 
-
     @FXML
     void ButtonCoura2Clicado(ActionEvent event) {
 
@@ -262,7 +261,6 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
 
     }
 
-    
     @FXML
     void ButtonCoura1Clicado(ActionEvent event) {
         nomeBarco = "Couracado";
