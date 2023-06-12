@@ -218,21 +218,19 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         verificaBarcos.start();
     }
 
-    @FXML
-    void ButtonCoura1Clicado(ActionEvent event) {
-        nomeBarco = "Couracado";
-        setNomeBarco("Couracado");
-        System.out.println("Couracado clicado" + contadordeCouracados + "vezes");
-        if (contadordeCouracados == 1) {
-            ButtonCoura1.disableProperty().set(true);
-        } else {
-            ButtonCoura1.disableProperty().set(false);
-        }
-        contadordeCouracados++;
-    }
 
     @FXML
     void ButtonCoura2Clicado(ActionEvent event) {
+
+    }
+
+    @FXML
+    void ButtonPorta2Clicado(ActionEvent event) {
+
+    }
+
+    @FXML
+    void ButtonSub2Clicado(ActionEvent event) {
 
     }
 
@@ -243,12 +241,10 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         if (contadordePortaAvioes == 0) {
             ButtonPorta1.disableProperty().set(true);
         }
-        contadordePortaAvioes++;
-    }
-
-    @FXML
-    void ButtonPorta2Clicado(ActionEvent event) {
-
+        if (validadorPosicionamento) {
+            contadordePortaAvioes++;
+            validadorPosicionamento = false;
+        }
     }
 
     @FXML
@@ -256,17 +252,31 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         nomeBarco = "Submarino";
         setNomeBarco("Submarino");
         System.out.println("Submarino clicado" + contadordeSubmarinos + "vezes");
-        if (contadordeSubmarinos == 4) {
+        if (contadordeSubmarinos == 5) {
             ButtonSub1.disableProperty().set(true);
         }
-        if(validadorPosicionamento)
-        contadordeSubmarinos++;
+        if (validadorPosicionamento) {
+            contadordeSubmarinos++;
+            validadorPosicionamento = false;
+        }
 
     }
 
+    
     @FXML
-    void ButtonSub2Clicado(ActionEvent event) {
-
+    void ButtonCoura1Clicado(ActionEvent event) {
+        nomeBarco = "Couracado";
+        setNomeBarco("Couracado");
+        System.out.println("Couracado clicado" + contadordeCouracados + "vezes");
+        if (contadordeCouracados == 1) {
+            ButtonCoura1.disableProperty().set(true);
+        } else {
+            ButtonCoura1.disableProperty().set(false);
+        }
+        if (validadorPosicionamento) {
+            contadordeCouracados++;
+            validadorPosicionamento = false;
+        }
     }
 
     private class ButtonClickHandler implements EventHandler<ActionEvent> {
@@ -275,11 +285,11 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             Button clickedButton = (Button) event.getSource();
             int row = GridPane.getRowIndex(clickedButton);
             int col = GridPane.getColumnIndex(clickedButton);
-            if (nomeBarco.equals("Submarino") && clickedButton.getUserData().equals("Agua")) {   
-                    Boolean validador2 = true;
-                    Boolean validadorSubmarino = true;
+            if (nomeBarco.equals("Submarino") && clickedButton.getUserData().equals("Agua")) {
+                Boolean validador2 = true;
+                Boolean validadorSubmarino = true;
 
-                       for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 2; i++) {
                     if (row - i >= 0) { // Verifica se o índice é válido
                         Button botaoAcima = buttons1[row - i][col];
                         if (!botaoAcima.getUserData().equals("Agua")) {
@@ -298,7 +308,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                             Button botaoAcima2 = buttons1[row - j][col];
                             clickedButton.setUserData("Submarino");
                             botaoAcima2.setUserData("Submarino");
-                            validadorPosicionamento = true;
+
                         } else {
                             validadorSubmarino = false;
                             break;
@@ -317,12 +327,14 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                     }
 
                     alert.showAndWait();
+                } else {
+                    validadorPosicionamento = true;
                 }
 
                 nomeBarco = "";
             }
             if (nomeBarco.equals("PortaAvioes") && clickedButton.getUserData().equals("Agua")) {
-                boolean validadorCouracado = true;
+                boolean validadorPorta = true;
                 boolean validador3 = true;
                 for (int i = 0; i < 5; i++) {
                     if (row - i >= 0) { // Verifica se o índice é válido
@@ -344,13 +356,13 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                             clickedButton.setUserData("PortaAvioes");
                             botaoAcima2.setUserData("PortaAvioes");
                         } else {
-                            validadorCouracado = false;
+                            validadorPorta = false;
                             break;
                         }
                     }
                 }
 
-                if (!validadorCouracado || !validador3) {
+                if (!validadorPorta || !validador3) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Erro");
                     alert.setHeaderText("Erro ao posicionar o barco");
@@ -407,6 +419,8 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                     }
 
                     alert.showAndWait();
+                } else {
+                    validadorPosicionamento = true;
                 }
 
                 nomeBarco = "";
