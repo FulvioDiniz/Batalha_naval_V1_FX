@@ -44,7 +44,7 @@
       </Text>
       <SplitPane dividerPositions="0.494949494949495" layoutX="469.0" layoutY="239.0" prefHeight="553.0" prefWidth="359.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane disable="true" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Text layoutX="21.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pontos" textAlignment="CENTER" wrappingWidth="131.13671875" />
                   <Text layoutX="21.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Acertos" textAlignment="CENTER" wrappingWidth="131.13671875" />
@@ -125,5 +125,6 @@
       <Button fx:id="ButtonSub2" layoutX="900.0" layoutY="809.0" mnemonicParsing="false" onAction="#ButtonSub2Clicado" prefHeight="41.0" prefWidth="89.0" text="SUBMARINO" />
       <Button fx:id="ButtonCoura2" layoutX="1001.0" layoutY="809.0" mnemonicParsing="false" onAction="#ButtonCoura2Clicado" prefHeight="41.0" prefWidth="89.0" text="COURACADO" />
       <Button fx:id="ButtonPorta2" layoutX="1105.0" layoutY="809.0" mnemonicParsing="false" onAction="#ButtonPorta2Clicado" prefHeight="41.0" prefWidth="101.0" text="PORTA_AVIAO" />
+      <Button fx:id="ButtonPosicionar1" layoutX="469.0" layoutY="809.0" mnemonicParsing="false" onAction="#ButtonPosicionarClicado1" prefHeight="41.0" prefWidth="101.0" style="-fx-background-color: green;" text="Posicionar" visible="false" />
    </children>
 </AnchorPane>

@@ -25,6 +25,8 @@ import batalha_naval.model.Barco;
 import batalha_naval.model.Filter.PessoaFilter;
 
 public class TelaBatalhaNavalController implements Initializable, Runnable {
+    @FXML
+    private Button ButtonPosicionar1;
 
     @FXML
     private Text TituloLabel;
@@ -103,6 +105,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
     private int contadordeCouracados = 0;
     // private boolean validador = false;
     private boolean validadorPosicionamento = false;
+    private threadVerificaBarcos verificaBarcos;
 
     public void setNomeJogador1(String text) {
         this.nomeJogador1 = text;
@@ -161,6 +164,8 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttons1 = new Button[10][10];
         buttons2 = new Button[10][10];
+        // ButtonPosicionar1.setVisible(true);
+        // ButtonPosicionar1.setDisable(false);
         inicializarCampos();
         EventHandler<ActionEvent> buttonClickHandler = new ButtonClickHandler();
         for (int row = 0; row < 10; row++) {
@@ -214,7 +219,8 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         }
         Thread thread = new Thread(this);
         thread.start();
-        threadVerificaBarcos verificaBarcos = new threadVerificaBarcos();
+        verificaBarcos = new threadVerificaBarcos();
+        //threadVerificaBarcos verificaBarcos = new threadVerificaBarcos();
         verificaBarcos.start();
     }
 
@@ -251,7 +257,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         nomeBarco = "Submarino";
         setNomeBarco("Submarino");
         System.out.println("Submarino clicado" + contadordeSubmarinos + "vezes");
-        if (contadordeSubmarinos == 5) {
+        if (contadordeSubmarinos == 4) {
             ButtonSub1.disableProperty().set(true);
         }
         if (validadorPosicionamento) {
@@ -275,6 +281,20 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             contadordeCouracados++;
             validadorPosicionamento = false;
         }
+    }
+
+    @FXML
+    void ButtonPosicionarClicado1(ActionEvent event) {
+        verificaBarcos.interrupt();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                buttons1[i][j].setDisable(true);
+                buttons2[i][j].setDisable(false);
+                buttons1[i][j].setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+            }
+        }
+        
+
     }
 
     private class ButtonClickHandler implements EventHandler<ActionEvent> {
@@ -492,6 +512,13 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                         if (buttons1[i][j].getUserData().equals("Couracado")) {
                             buttons1[i][j].setStyle(
                                     "-fx-background-color: grey; -fx-border-color: black; -fx-text-fill: grey");
+                        }
+                        if (ButtonSub1.isDisable() && ButtonPorta1.isDisable() && ButtonCoura1.isDisable()
+                                && ButtonSub2.isDisable() && ButtonPorta2.isDisable() && ButtonCoura2.isDisable()) {
+
+                            ButtonPosicionar1.setVisible(true);
+                            ButtonPosicionar1.setDisable(false);
+                            
                         }
 
                     }
