@@ -182,7 +182,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                 button1.setMinSize(50, 50);
                 button1.setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
                 buttons1[row][col] = button1;
-                button1.setOnAction(buttonClickHandler);
+                
                 button1.setText("button1[" + row + "][" + col + "]]");
                 button1.setUserData("Agua");
                 button1.setOnMouseEntered(event -> {
@@ -324,6 +324,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                     }
 
                 });
+                button1.setOnAction(buttonClickHandler);
                 GridPane1.add(button1, col, row);
 
                 Button button2 = new Button();
@@ -361,7 +362,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         verificaBarcos = new threadVerificaBarcos();
         verificaBarcos2 = new threadVerificaBarcos2();
         // threadVerificaBarcos verificaBarcos = new threadVerificaBarcos();
-        // verificaBarcos.start();
+        verificaBarcos.start();
         // verificaBarcos2.start();
     }
 
@@ -504,7 +505,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
 
             System.out.println("Button clicked: " + row + ", " + col + "valor = " + clickedButton.getUserData());
             if (!trocaJogador && nomeBarco != null) {
-                verificaBarcos.start();
+                //verificaBarcos.start();
                 if (nomeBarco.equals("Submarino") && clickedButton.getUserData().equals("Agua")) {
                     Boolean validador2 = true;
                     Boolean validadorSubmarino = true;
