@@ -25,6 +25,10 @@ import batalha_naval.model.Barco;
 import batalha_naval.model.Filter.PessoaFilter;
 
 public class TelaBatalhaNavalController implements Initializable, Runnable {
+
+    @FXML
+    private Button ButtonPosicionar2;
+
     @FXML
     private Button ButtonPosicionar1;
 
@@ -168,6 +172,8 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         buttons2 = new Button[10][10];
         // ButtonPosicionar1.setVisible(true);
         // ButtonPosicionar1.setDisable(false);
+        //ButtonPosicionar2.setVisible(true);
+        //ButtonPosicionar2.setDisable(false);
         inicializarCampos();
         EventHandler<ActionEvent> buttonClickHandler = new ButtonClickHandler();
         for (int row = 0; row < 10; row++) {
@@ -327,7 +333,7 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                 buttons1[i][j].setDisable(true);
                 buttons2[i][j].setDisable(false);
                 buttons1[i][j].setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
-                //buttons2[i][j].setUserData("Agua");
+                // buttons2[i][j].setUserData("Agua");
                 ButtonSub2.setDisable(false);
                 ButtonPorta2.setDisable(false);
                 ButtonCoura2.setDisable(false);
@@ -340,6 +346,21 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         nomeBarco = "";
         ButtonPosicionar1.setDisable(true);
         trocaJogador = true;
+
+    }
+
+    @FXML
+    void ButtonPosicionar2Clicado(ActionEvent event) {
+        verificaBarcos2.interrupt();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                buttons2[i][j].setDisable(false);
+                buttons1[i][j].setDisable(false);
+                buttons2[i][j].setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+            }
+        }
+        ButtonPosicionar1.setVisible(false);
+        ButtonPosicionar2.setVisible(false);
 
     }
 
@@ -737,6 +758,13 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                         if (buttons2[i][j].getUserData().equals("Couracado")) {
                             buttons2[i][j].setStyle(
                                     "-fx-background-color: grey; -fx-border-color: black; -fx-text-fill: grey");
+                        }
+                        if (ButtonSub1.isDisable() && ButtonPorta1.isDisable() && ButtonCoura1.isDisable()
+                                && ButtonSub2.isDisable() && ButtonPorta2.isDisable() && ButtonCoura2.isDisable()) {
+
+                            ButtonPosicionar2.setVisible(true);
+                            ButtonPosicionar2.setDisable(false);
+
                         }
                     }
                 }
