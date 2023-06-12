@@ -172,8 +172,8 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
         buttons2 = new Button[10][10];
         // ButtonPosicionar1.setVisible(true);
         // ButtonPosicionar1.setDisable(false);
-        //ButtonPosicionar2.setVisible(true);
-        //ButtonPosicionar2.setDisable(false);
+        // ButtonPosicionar2.setVisible(true);
+        // ButtonPosicionar2.setDisable(false);
         inicializarCampos();
         EventHandler<ActionEvent> buttonClickHandler = new ButtonClickHandler();
         for (int row = 0; row < 10; row++) {
@@ -187,11 +187,142 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
                 button1.setUserData("Agua");
                 button1.setOnMouseEntered(event -> {
                     Button b = (Button) event.getSource();
-                    b.setStyle("-fx-background-color: red; -fx-border-color: black; -fx-text-fill: red");
+                    int linha = GridPane.getRowIndex(b);
+                    int coluna = GridPane.getColumnIndex(b);
+                    if (!trocaJogador && nomeBarco != null) {
+                        if (nomeBarco.equals("Submarino") && b.getUserData().equals("Agua")) {
+                            boolean validadorSubmarino = true;
+                            Boolean validador2 = true;
+                            for (int i = 0; i < 2; i++) {
+                                if (linha - i >= 0) { // Verifica se o índice é válido
+                                    Button botaoAcima = buttons1[linha - i][coluna];
+                                    if (!botaoAcima.getUserData().equals("Agua")) {
+                                        validador2 = false;
+                                        break;
+                                    }
+                                } else {
+                                    validador2 = false;
+                                    break;
+                                }
+                            }
+
+                            if (validador2) {
+                                for (int j = 0; j < 2; j++) {
+                                    if (linha - j >= 0 && coluna >= 0) { // Verifica se os índices são válidos
+                                        Button botaoAcima2 = buttons1[linha - j][coluna];
+                                        b.setStyle(
+                                                "-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
+                                        botaoAcima2.setStyle(
+                                                "-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
+
+                                    } else {
+                                        validadorSubmarino = false;
+
+                                    }
+                                }
+                            }
+                            if (!validadorSubmarino || !validador2) {
+                                b.styleProperty()
+                                        .set("-fx-background-color: red; -fx-border-color: black; -fx-text-fill: red");
+                            }
+                        }
+                        if (nomeBarco.equals("PortaAvioes") && b.getUserData().equals("Agua")) {
+                            boolean validador3 = true;
+                            for (int i = 0; i < 5; i++) {
+                                if (linha - i >= 0) { // Verifica se o índice é válido
+                                    Button botaoAcima = buttons1[linha - i][coluna];
+                                    if (!botaoAcima.getUserData().equals("Agua")) {
+                                        validador3 = false;
+                                        break;
+                                    }
+                                } else {
+                                    validador3 = false;
+                                    break;
+                                }
+                            }
+
+                            if (validador3) {
+                                for (int j = 0; j < 5; j++) {
+                                    if (linha - j >= 0 && coluna >= 0) { // Verifica se os índices são válidos
+                                        Button botaoAcima2 = buttons1[linha - j][coluna];
+                                        b.setStyle(
+                                                "-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
+                                        botaoAcima2.setStyle(
+                                                "-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
+                                    }
+                                }
+                            } else {
+                                b.setStyle(
+                                        "-fx-background-color: red; -fx-border-color: black; -fx-text-fill: red");
+                            }
+                        }
+
+                        if (nomeBarco.equals("Couracado") && b.getUserData().equals("Agua")) {
+                            boolean validador2 = true;
+                            for (int i = 0; i < 4; i++) {
+                                if (linha - i >= 0) { // Verifica se o índice é válido
+                                    Button botaoAcima = buttons1[linha - i][coluna];
+                                    if (!botaoAcima.getUserData().equals("Agua")) {
+                                        validador2 = false;
+                                        break;
+                                    }
+                                } else {
+                                    validador2 = false;
+                                    break;
+                                }
+                            }
+
+                            if (validador2) {
+                                for (int j = 0; j < 4; j++) {
+                                    if (linha - j >= 0 && coluna >= 0) { // Verifica se os índices são válidos
+                                        Button botaoAcima2 = buttons1[linha - j][coluna];
+                                        b.setStyle(
+                                                "-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
+                                        botaoAcima2.setStyle(
+                                                "-fx-background-color: green; -fx-border-color: black; -fx-text-fill: green");
+                                    }
+                                }
+                            } else {
+                                b.setStyle(
+                                        "-fx-background-color: red; -fx-border-color: black; -fx-text-fill: red");
+                            }
+                        }
+                    }
                 });
                 button1.setOnMouseExited(event -> {
                     Button b = (Button) event.getSource();
-                    b.setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+                    int linha = GridPane.getRowIndex(b);
+                    int coluna = GridPane.getColumnIndex(b);
+                    if (nomeBarco != null) {
+                        if (nomeBarco.equals("Submarino")) {
+                            for (int i = 0; i < 2; i++) {
+                                if (linha - i >= 0 || coluna - i >= 0) {
+                                    Button botaoAcima = buttons1[linha - i][coluna];
+                                    b.setStyle(
+                                            "-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+                                    botaoAcima.setStyle(
+                                            "-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+                                }
+                            }
+                        }
+                        if (nomeBarco.equals("Couracado")) {
+                            for (int i = 0; i < 4; i++) {
+                                Button botaoAcima = buttons1[linha - i][coluna];
+                                b.setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+                                botaoAcima.setStyle(
+                                        "-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+                            }
+                        }
+                        if (nomeBarco.equals("PortaAvioes")) {
+                            for (int i = 0; i < 5; i++) {
+                                Button botaoAcima = buttons1[linha - i][coluna];
+                                b.setStyle("-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+                                botaoAcima.setStyle(
+                                        "-fx-background-color: blue; -fx-border-color: black; -fx-text-fill: blue");
+                            }
+                        }
+                    }
+
                 });
                 GridPane1.add(button1, col, row);
 
@@ -226,11 +357,11 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             }
         }
         Thread thread = new Thread(this);
-        thread.start();
+        // thread.start();
         verificaBarcos = new threadVerificaBarcos();
         verificaBarcos2 = new threadVerificaBarcos2();
         // threadVerificaBarcos verificaBarcos = new threadVerificaBarcos();
-        verificaBarcos.start();
+        // verificaBarcos.start();
         // verificaBarcos2.start();
     }
 
@@ -370,8 +501,10 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
             Button clickedButton = (Button) event.getSource();
             int row = GridPane.getRowIndex(clickedButton);
             int col = GridPane.getColumnIndex(clickedButton);
+
             System.out.println("Button clicked: " + row + ", " + col + "valor = " + clickedButton.getUserData());
-            if (!trocaJogador) {
+            if (!trocaJogador && nomeBarco != null) {
+                verificaBarcos.start();
                 if (nomeBarco.equals("Submarino") && clickedButton.getUserData().equals("Agua")) {
                     Boolean validador2 = true;
                     Boolean validadorSubmarino = true;
@@ -512,8 +645,9 @@ public class TelaBatalhaNavalController implements Initializable, Runnable {
 
                     nomeBarco = "";
                 }
+                threadVerificaBarcos.interrupted();
 
-            } else {
+            } else if (nomeBarco != null) {
                 if (nomeBarco.equals("Submarino") && clickedButton.getUserData().equals("Agua")) {
                     Boolean validador2 = true;
                     Boolean validadorSubmarino = true;
